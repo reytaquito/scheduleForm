@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+</head>
+
+<body>
+    <div id="form-container">
+        <div class="form-step" id="step-1" style="display: block; background-color: rgb(146, 146, 146);">
+            <p id="error-message" style="display:none;color:rgb(245, 0, 0)"></p>
+
+            <label for="email">Email:</label>
+            <input type="email" id="email" name="email">
+
+            <p>Select your pickup day:</p>
+            <select id="pickup-day">
+                <option value=""></option>
+            </select>
+
+            <p>Recurring Pickup Window *</p>
+            <select id="pickup-time">
+                <option value=""></option>
+                <option value="8-9">8am-9am</option>
+                <option value="9-10">9am-10am</option>
+                <option value="10-11">10am-11am</option>
+            </select>
+
+            <button class="next-btn">Next</button>
+        </div>
+
+        <div class="form-step" id="step-2" style="display: none; background-color: green;">
+            <p id="error-message-2" style="display:none;color:red"></p>
+
+            <p>Select a day and time for ALL YOUR DELIVERIES:</p>
+            <p>*Note: Please select a Delivery Day at least 2 days after your Pickup Day. 24hrs Coming soon!</p>
+
+            <p>Select your delivery day:</p>
+            <select id="delivery-day">
+                <option value=""></option>
+            </select>
+
+            <p>Recurring Delivery Window *</p>
+            <select id="delivery-time">
+                <option value=""></option>
+                <option value="2-3">2pm-3pm</option>
+                <option value="3-4">3pm-4pm</option>
+                <option value="4-5">4pm-5pm</option>
+            </select>
+
+            <button class="back-btn">Back</button>
+            <button class="next-btn">Next</button>
+        </div>
+
+        <div class="form-step" id="step-3" style="display: none; background-color: rgb(146, 146, 213);">
+            <div id="error-message-3" style="color: red;"></div>
+            <h2>Pickup Address</h2>
+            <form>
+                <label for="pickup-address-line-1">Address Line 1 *</label><br>
+                <input type="text" id="pickup-address-line-1"><br>
+                <label for="pickup-address-line-2">Address Line 2</label><br>
+                <input type="text" id="pickup-address-line-2"><br>
+                <label for="pickup-city">City *</label><br>
+                <input type="text" id="pickup-city"><br>
+                <label for="pickup-state">State *</label><br>
+                <input type="text" id="pickup-state"><br>
+                <label for="pickup-zip">Zip Code *</label><br>
+                <input type="text" id="pickup-zip"><br>
+                <label for="same-as-pickup">The same delivery address?</label><br>
+                <input type="checkbox" id="same-as-pickup"> Same As Pickup<br>
+
+            </form>
+            <button class="back-btn">Back</button>
+            <button class="next-btn">Next</button>
+
+        </div>
+
+        <div class="form-step" id="step-4" style="display: none; background-color: yellow;">
+            <div id="error-message-4" style="color: red;"></div>
+            <h2>Delivery Address</h2>
+            <form>
+                <label for="delivery-address-line-1">Address Line 1 *</label><br>
+                <input type="text" id="delivery-address-line-1"><br>
+                <label for="delivery-address-line-2">Address Line 2</label><br>
+                <input type="text" id="delivery-address-line-2"><br>
+                <label for="delivery-city">City *</label><br>
+                <input type="text" id="delivery-city"><br>
+                <label for="delivery-state">State *</label><br>
+                <input type="text" id="delivery-state"><br>
+                <label for="delivery-zip">Zip Code *</label><br>
+                <input type="text" id="delivery-zip"><br>
+            </form>
+            <button class="back-btn">Back</button>
+            <button class="next-btn">Next</button>
+
+        </div>
+
+        <div class="form-step" id="step-5" style="display: none; background-color: purple;">
+            <h2>Any Additional Information?</h2>
+            <textarea id="additional-info" placeholder="Gate code, pickup instructions, special request (no crest, no starch, fold pants, etc.)"></textarea><br>
+            <button class="back-btn">Back</button>
+            <button id="submit-btn">Submit</button>
+            <div id="error-message-5" style="color:red; display:none;"></div>
+        </div>
+    </div>
+
+
+
+
+    <script>
+        $(document).ready(function () {
+            var currentStep = 1;
+
+            // Map numbers to day names
+            var days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+
+            // Function to populate day dropdown
+            function populateDayDropdown(dropdownId, selectedDayIndex, isDelivery) {
+                if (isDelivery) {
+                    var emptyOption = $('<option>', {
+                        value: "",
+                        text: "",
+                    });
+                    $('#' + dropdownId).append(emptyOption);
+                }
+
+                for (var i = 0; i < 8; i++) {
+                    var dayIndex = (selectedDayIndex + i) % 7;
+                    var dayName = days[dayIndex];
+
+                    if (i == 7) {
+                        dayName += " (Following week)"
+                    }
+
+                    var option = $('<option>', {
+                        value: dayName,
+                        text: dayName,
+                        disabled: i < 2 // Disable the first 2 days
+                    });
+                    $('#' + dropdownId).append(option);
+                }
+            }
+
+            // Populate the pickup day dropdown
+            populateDayDropdown('pickup-day', (new Date()).getDay(), false);
+
+            $('.next-btn').click(function () {
+                var errorMessage = "";
+
+                if (currentStep == 1) {
+                    var email = $('#email').val();
+                    var pickupDay = $('#pickup-day').val();
+                    var pickupTime = $('#pickup-time').val();
+
+                    if (!email) {
+                        errorMessage += 'Question, email is required.<br/>';
+                    }
+
+                    if (!pickupDay) {
+                        errorMessage += 'Question, pickup day is required.<br/>';
+                    }
+
+                    if (!pickupTime) {
+                        errorMessage += 'Question, pickup time is required.<br/>';
+                    }
+
+                    if (errorMessage) {
+                        $('#error-message').html(errorMessage).show();
+                        return;
+                    } else {
+                        $('#error-message').hide();
+
+                        // Populate the delivery day dropdown based on the pickup day selection
+                        var selectedPickupDayIndex = days.indexOf(pickupDay);
+                        $('#delivery-day').empty();
+                        populateDayDropdown('delivery-day', selectedPickupDayIndex, true);
+                    }
+                }
+
+                else if (currentStep == 2) {
+                    var deliveryDay = $('#delivery-day').val();
+                    var deliveryTime = $('#delivery-time').val();
+
+                    if (!deliveryDay) {
+                        errorMessage += 'Question, delivery day is required.<br/>';
+                    }
+
+                    if (!deliveryTime) {
+                        errorMessage += 'Question, delivery time is required.<br/>';
+                    }
+
+                    if (errorMessage) {
+                        $('#error-message-2').html(errorMessage).show();
+                        return;
+                    } else {
+                        $('#error-message-2').hide();
+                    }
+                }
+                else if (currentStep == 3) {
+                    var pickupAddressLine1 = $('#pickup-address-line-1').val();
+                    var pickupCity = $('#pickup-city').val();
+                    var pickupState = $('#pickup-state').val();
+                    var pickupZip = $('#pickup-zip').val();
+
+                    if (!pickupAddressLine1) {
+                        errorMessage += 'Question, Address Line 1 is required.<br/>';
+                    }
+
+                    if (!pickupCity) {
+                        errorMessage += 'Question, City is required.<br/>';
+                    }
+
+                    if (!pickupState) {
+                        errorMessage += 'Question, State is required.<br/>';
+                    }
+
+                    if (!pickupZip) {
+                        errorMessage += 'Question, Zip Code is required.<br/>';
+                    }
+
+                    if (errorMessage) {
+                        $('#error-message-3').html(errorMessage).show();
+                        return;
+                    } else {
+                        $('#error-message-3').hide();
+                    }
+                }
+
+                else if (currentStep == 4) {
+                    var deliveryAddressLine1 = $('#delivery-address-line-1').val();
+                    var deliveryCity = $('#delivery-city').val();
+                    var deliveryState = $('#delivery-state').val();
+                    var deliveryZip = $('#delivery-zip').val();
+
+                    if (!deliveryAddressLine1) {
+                        errorMessage += 'Question, Address Line 1 is required.<br/>';
+                    }
+
+                    if (!deliveryCity) {
+                        errorMessage += 'Question, City is required.<br/>';
+                    }
+
+                    if (!deliveryState) {
+                        errorMessage += 'Question, State is required.<br/>';
+                    }
+
+                    if (!deliveryZip) {
+                        errorMessage += 'Question, Zip Code is required.<br/>';
+                    }
+
+                    if (errorMessage) {
+                        $('#error-message-4').html(errorMessage).show();
+                        return;
+                    } else {
+                        $('#error-message-4').hide();
+                    }
+                }
+                if (currentStep == 3) {
+                    var sameAsPickup = $('#same-as-pickup').is(':checked');
+                    if (sameAsPickup) {
+                        var pickupAddressLine1 = $('#pickup-address-line-1').val();
+                        var pickupAddressLine2 = $('#pickup-address-line-2').val();
+                        var pickupCity = $('#pickup-city').val();
+                        var pickupState = $('#pickup-state').val();
+                        var pickupZip = $('#pickup-zip').val();
+
+                        $('#delivery-address-line-1').val(pickupAddressLine1);
+                        $('#delivery-address-line-2').val(pickupAddressLine2);
+                        $('#delivery-city').val(pickupCity);
+                        $('#delivery-state').val(pickupState);
+                        $('#delivery-zip').val(pickupZip);
+
+                        if (currentStep < 5) {
+                            $('#step-' + currentStep).hide();
+                            currentStep += 2; // Skip step 4
+                            $('#step-' + currentStep).show();
+                        }
+
+                        return;
+                    }
+                }
+
+                if (currentStep < 5) {
+                    $('#step-' + currentStep).hide();
+                    currentStep += 1;
+                    $('#step-' + currentStep).show();
+                }
+            });
+
+            $('.back-btn').click(function() {
+        if(currentStep > 1) {
+            $('#step-' + currentStep).hide();
+            currentStep -= 1;
+            $('#step-' + currentStep).show();
+
+            if(currentStep < 5) {
+                // Change 'Submit' button back to 'Next'
+                $('#submit-btn').attr('id', 'next-btn').text('Next');
+            }
+        }
+        
+        
+            });
+        });
+        $("#submit-btn").click(function () {
+    // Collect form data
+    var formData = {
+        email: $('#email').val(),
+        pickupDay: $('#pickup-day').val(),
+        pickupTime: $('#pickup-time').val(),
+        deliveryDay: $('#delivery-day').val(),
+        deliveryTime: $('#delivery-time').val(),
+        pickupAddressLine1: $('#pickup-address-line-1').val(),
+        pickupAddressLine2: $('#pickup-address-line-2').val(),
+        pickupCity: $('#pickup-city').val(),
+        pickupState: $('#pickup-state').val(),
+        pickupZip: $('#pickup-zip').val(),
+        deliveryAddressLine1: $('#delivery-address-line-1').val(),
+        deliveryAddressLine2: $('#delivery-address-line-2').val(),
+        deliveryCity: $('#delivery-city').val(),
+        deliveryState: $('#delivery-state').val(),
+        deliveryZip: $('#delivery-zip').val(),
+        additionalInfo: $('#additional-info').val(),
+    };
+    console.log(JSON.stringify(formData))
+    // Send form data to the server
+    $.ajax({
+    type: 'POST',
+    url: 'your-server-url',
+    data: JSON.stringify(formData),
+    contentType: 'application/json; charset=utf-8',
+    dataType: 'json',
+    success: function (response) {
+        // Handle successful response
+        alert('Form submitted successfully!');
+    },
+    error: function (error) {
+        // Handle error response
+        $('#error-message-5').html('There was an error submitting the form. Please try again.').show();
+    }
+});
+
+});
+
+
+
+
+
+
+
+
+
+    </script>
+</body>
+
+</html>

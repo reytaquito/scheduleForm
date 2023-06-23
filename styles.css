@@ -1,0 +1,30 @@
+.form-step {
+    display: none;
+    width: 50%;
+}
+
+#step-1 {
+    background-color: rgb(166, 166, 166);
+    display: block;
+}
+
+#step-2 {
+    background-color: green;
+}
+
+#step-3 {
+    background-color: blue;
+}
+
+#step-4 {
+    background-color: yellow;
+}
+
+#step-5 {
+    background-color: orange;
+}
+textarea {
+    resize: none;
+    width: 50%px;
+    height: 200px;
+}
