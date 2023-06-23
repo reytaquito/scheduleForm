@@ -103,7 +103,8 @@
 
         <div class="form-step" id="step-5" style="display: none; background-color: purple;">
             <h2>Any Additional Information?</h2>
-            <textarea id="additional-info" placeholder="Gate code, pickup instructions, special request (no crest, no starch, fold pants, etc.)"></textarea><br>
+            <textarea id="additional-info"
+                placeholder="Gate code, pickup instructions, special request (no crest, no starch, fold pants, etc.)"></textarea><br>
             <button class="back-btn">Back</button>
             <button id="submit-btn">Submit</button>
             <div id="error-message-5" style="color:red; display:none;"></div>
@@ -293,60 +294,59 @@
                 }
             });
 
-            $('.back-btn').click(function() {
-        if(currentStep > 1) {
-            $('#step-' + currentStep).hide();
-            currentStep -= 1;
-            $('#step-' + currentStep).show();
+            $('.back-btn').click(function () {
+                if (currentStep > 1) {
+                    $('#step-' + currentStep).hide();
+                    currentStep -= 1;
+                    $('#step-' + currentStep).show();
 
-            if(currentStep < 5) {
-                // Change 'Submit' button back to 'Next'
-                $('#submit-btn').attr('id', 'next-btn').text('Next');
-            }
-        }
-        
-        
+                    if (currentStep === 5) {
+                        // Change 'Next' button back to 'Submit'
+                        $('#next-btn').attr('id', 'submit-btn').text('Submit');
+                    }
+                }
             });
+
         });
         $("#submit-btn").click(function () {
-    // Collect form data
-    var formData = {
-        email: $('#email').val(),
-        pickupDay: $('#pickup-day').val(),
-        pickupTime: $('#pickup-time').val(),
-        deliveryDay: $('#delivery-day').val(),
-        deliveryTime: $('#delivery-time').val(),
-        pickupAddressLine1: $('#pickup-address-line-1').val(),
-        pickupAddressLine2: $('#pickup-address-line-2').val(),
-        pickupCity: $('#pickup-city').val(),
-        pickupState: $('#pickup-state').val(),
-        pickupZip: $('#pickup-zip').val(),
-        deliveryAddressLine1: $('#delivery-address-line-1').val(),
-        deliveryAddressLine2: $('#delivery-address-line-2').val(),
-        deliveryCity: $('#delivery-city').val(),
-        deliveryState: $('#delivery-state').val(),
-        deliveryZip: $('#delivery-zip').val(),
-        additionalInfo: $('#additional-info').val(),
-    };
-    console.log(JSON.stringify(formData))
-    // Send form data to the server
-    $.ajax({
-    type: 'POST',
-    url: 'your-server-url',
-    data: JSON.stringify(formData),
-    contentType: 'application/json; charset=utf-8',
-    dataType: 'json',
-    success: function (response) {
-        // Handle successful response
-        alert('Form submitted successfully!');
-    },
-    error: function (error) {
-        // Handle error response
-        $('#error-message-5').html('There was an error submitting the form. Please try again.').show();
-    }
-});
+            // Collect form data
+            var formData = {
+                email: $('#email').val(),
+                pickupDay: $('#pickup-day').val(),
+                pickupTime: $('#pickup-time').val(),
+                deliveryDay: $('#delivery-day').val(),
+                deliveryTime: $('#delivery-time').val(),
+                pickupAddressLine1: $('#pickup-address-line-1').val(),
+                pickupAddressLine2: $('#pickup-address-line-2').val(),
+                pickupCity: $('#pickup-city').val(),
+                pickupState: $('#pickup-state').val(),
+                pickupZip: $('#pickup-zip').val(),
+                deliveryAddressLine1: $('#delivery-address-line-1').val(),
+                deliveryAddressLine2: $('#delivery-address-line-2').val(),
+                deliveryCity: $('#delivery-city').val(),
+                deliveryState: $('#delivery-state').val(),
+                deliveryZip: $('#delivery-zip').val(),
+                additionalInfo: $('#additional-info').val(),
+            };
+            console.log(JSON.stringify(formData))
+            // Send form data to the server
+            $.ajax({
+                type: 'POST',
+                url: 'your-server-url',
+                data: JSON.stringify(formData),
+                contentType: 'application/json; charset=utf-8',
+                dataType: 'json',
+                success: function (response) {
+                    // Handle successful response
+                    alert('Form submitted successfully!');
+                },
+                error: function (error) {
+                    // Handle error response
+                    $('#error-message-5').html('There was an error submitting the form. Please try again.').show();
+                }
+            });
 
-});
+        });
 
 
 
