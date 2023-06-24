@@ -9,6 +9,7 @@
     <link rel="stylesheet" href="styles.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 
+
 </head>
 
 <body>
@@ -71,13 +72,16 @@
                 <label for="pickup-state">State *</label><br>
                 <input type="text" id="pickup-state"><br>
                 <label for="pickup-zip">Zip Code *</label><br>
-                <input type="text" id="pickup-zip"><br>
-                <label for="same-as-pickup">The same delivery address?</label><br>
-                <input type="checkbox" id="same-as-pickup"> Same As Pickup<br>
-
+                <input list="zip-codes" type="text" id="pickup-zip"><br>
+                <datalist id="zip-codes"></datalist>
+                <div class="hiddeInfo">
+                    <label for="same-as-pickup">The same delivery address?</label><br>
+                    <input type="checkbox" id="same-as-pickup"> Same As Pickup<br>
+                    <button class="back-btn">Back</button>
+                    <button class="next-btn">Next</button>
+                </div>
             </form>
-            <button class="back-btn">Back</button>
-            <button class="next-btn">Next</button>
+
 
         </div>
 
@@ -94,10 +98,13 @@
                 <label for="delivery-state">State *</label><br>
                 <input type="text" id="delivery-state"><br>
                 <label for="delivery-zip">Zip Code *</label><br>
-                <input type="text" id="delivery-zip"><br>
+                <input list="zip-codes" type="text" id="delivery-zip"><br>
+                <div class="hiddeInfo">
+                    <button class="back-btn">Back</button>
+                    <button class="next-btn">Next</button>
+                </div>
+
             </form>
-            <button class="back-btn">Back</button>
-            <button class="next-btn">Next</button>
 
         </div>
 
@@ -120,7 +127,48 @@
 
             // Map numbers to day names
             var days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+            var zipCodes = ["33012", "33013", "33014", "33015", "33016", "33018", "33025", "33054", "33055", "33154", "33160", "33167", "33179"];
 
+            var isValidZip = true; // this variable is to track if a zip is valid
+
+            for (var i = 0; i < zipCodes.length; i++) {
+                var option = $('<option>', {
+                    value: zipCodes[i]
+                });
+                $('#zip-codes').append(option);
+            }
+
+            $('#pickup-zip, #delivery-zip').change(function () {
+                var inputValue = $(this).val();
+                // Remove any previous warning message
+                $(".warning-msg").remove();
+
+                if (!zipCodes.includes(inputValue)) {
+                    isValidZip = false; // set isValidZip to false
+                    $(this).after('<p class="warning-msg" style="color:red;">Coming to your zip code soon!</p>');
+                } else {
+                    isValidZip = true; // set isValidZip to true
+                }
+            });
+
+            // When you press "Next", check if the zip is valid. If not, prevent moving to next step.
+            $("#next-button").click(function (e) {
+                if (!isValidZip) {
+                    e.preventDefault(); // prevent default action, which in this case is the step transition
+                    alert("Please enter a valid ZIP code."); // show a warning message
+                }
+            });
+
+            // When you press "Next", check if the zip is valid. If not, prevent moving to next step.
+            $("#next-button").click(function (e) {
+                if (!isValidZip) {
+                    e.preventDefault(); // prevent default action, which in this case is the step transition
+                    // Remove any previous warning message on top of the form
+                    $(".top-warning-msg").remove();
+                    // Show the warning message on top of the form
+                    $("#my-form").prepend('<p class="top-warning-msg" style="color:red;">Please enter a valid ZIP code.</p>');
+                }
+            });
             // Function to populate day dropdown
             function populateDayDropdown(dropdownId, selectedDayIndex, isDelivery) {
                 if (isDelivery) {

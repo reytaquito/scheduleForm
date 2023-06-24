@@ -24,7 +24,11 @@
     background-color: orange;
 }
 textarea {
+    
     resize: none;
-    width: 50%px;
+    width: 70%;
     height: 200px;
+}
+#notify-form {
+    display: none;
 }
