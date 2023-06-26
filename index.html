@@ -14,35 +14,37 @@
 
 <body>
     <div id="form-container">
-        <div class="form-step" id="step-1" style="display: block; background-color: rgb(146, 146, 146);">
+        <div class="form-step" id="step-1" style="display: block; ">
             <p id="error-message" style="display:none;color:rgb(245, 0, 0)"></p>
 
-            <label for="email">Email:</label>
-            <input type="email" id="email" name="email">
-
-            <p>Select your pickup day:</p>
+            <label for="email">Email*</label> <br>
+            <input type="email" id="email" name="email"> <br>
+            <label for="phone">Phone Number*</label> <br>
+            <input type="text" class="form-control" id="phone" name="phone"> <br>
+            <p>Select a day and time for ALL YOUR PICKUPS:</p>
+            <p>Recurring Pickup Day*</p>
             <select id="pickup-day">
                 <option value=""></option>
             </select>
 
-            <p>Recurring Pickup Window *</p>
+            <p>Recurring Pickup Window*</p>
             <select id="pickup-time">
                 <option value=""></option>
                 <option value="8-9">8am-9am</option>
                 <option value="9-10">9am-10am</option>
                 <option value="10-11">10am-11am</option>
-            </select>
+            </select> <br>
 
             <button class="next-btn">Next</button>
         </div>
 
-        <div class="form-step" id="step-2" style="display: none; background-color: green;">
+        <div class="form-step" id="step-2" style="display: none; ">
             <p id="error-message-2" style="display:none;color:red"></p>
 
             <p>Select a day and time for ALL YOUR DELIVERIES:</p>
             <p>*Note: Please select a Delivery Day at least 2 days after your Pickup Day. 24hrs Coming soon!</p>
 
-            <p>Select your delivery day:</p>
+            <p>Recurring Delivery Day *</p>
             <select id="delivery-day">
                 <option value=""></option>
             </select>
@@ -53,13 +55,13 @@
                 <option value="2-3">2pm-3pm</option>
                 <option value="3-4">3pm-4pm</option>
                 <option value="4-5">4pm-5pm</option>
-            </select>
+            </select> <br>
 
             <button class="back-btn">Back</button>
             <button class="next-btn">Next</button>
         </div>
 
-        <div class="form-step" id="step-3" style="display: none; background-color: rgb(146, 146, 213);">
+        <div class="form-step" id="step-3" style="display: none;">
             <div id="error-message-3" style="color: red;"></div>
             <h2>Pickup Address</h2>
             <form>
@@ -72,18 +74,26 @@
                 <label for="pickup-state">State *</label><br>
                 <input type="text" id="pickup-state"><br>
                 <label for="pickup-zip">Zip Code *</label><br>
-                <input list="zip-codes" type="text" id="pickup-zip"><br>
+                <div id="zip-code-container">
+                    <input list="zip-codes" type="text" id="pickup-zip" name="pickup-zip"><br>
+                </div>
                 <datalist id="zip-codes"></datalist>
-                <label for="same-as-pickup">The same delivery address?</label><br>
-                <input type="checkbox" id="same-as-pickup"> Same As Pickup<br>
+                <div class="hiddeInfo">
+                    <label for="same-as-pickup">The same delivery address?</label><br>
+                    <input type="checkbox" id="same-as-pickup"> Same As Pickup<br>
+                </div>
+
 
             </form>
-            <button class="back-btn">Back</button>
-            <button class="next-btn">Next</button>
+            <div class="hiddeInfo">
+
+                <button class="back-btn">Back</button>
+                <button class="next-btn">Next</button>
+            </div>
 
         </div>
 
-        <div class="form-step" id="step-4" style="display: none; background-color: yellow;">
+        <div class="form-step" id="step-4" style="display: none; ">
             <div id="error-message-4" style="color: red;"></div>
             <h2>Delivery Address</h2>
             <form>
@@ -96,14 +106,18 @@
                 <label for="delivery-state">State *</label><br>
                 <input type="text" id="delivery-state"><br>
                 <label for="delivery-zip">Zip Code *</label><br>
-                <input list="zip-codes" type="text" id="delivery-zip"><br>
+                <div id="zip-code-container">
+                    <input list="zip-codes" type="text" id="delivery-zip" name="delivery-zip"><br>
+                </div>
             </form>
-            <button class="back-btn">Back</button>
-            <button class="next-btn">Next</button>
+            <div class="hiddeInfo">
+                <button class="back-btn">Back</button>
+                <button class="next-btn">Next</button>
+            </div>
 
         </div>
 
-        <div class="form-step" id="step-5" style="display: none; background-color: purple;">
+        <div class="form-step" id="step-5" style="display: none; ">
             <h2>Any Additional Information?</h2>
             <textarea id="additional-info"
                 placeholder="Gate code, pickup instructions, special request (no crest, no starch, fold pants, etc.)"></textarea><br>
@@ -119,7 +133,7 @@
     <script>
         $(document).ready(function () {
             var currentStep = 1;
-
+            
             // Map numbers to day names
             var days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
             var zipCodes = ["33012", "33013", "33014", "33015", "33016", "33018", "33025", "33054", "33055", "33154", "33160", "33167", "33179"];
@@ -132,7 +146,7 @@
                 });
                 $('#zip-codes').append(option);
             }
-
+            
             $('#pickup-zip, #delivery-zip').change(function () {
                 var inputValue = $(this).val();
                 // Remove any previous warning message
@@ -141,8 +155,19 @@
                 if (!zipCodes.includes(inputValue)) {
                     isValidZip = false; // set isValidZip to false
                     $(this).after('<p class="warning-msg" style="color:red;">Coming to your zip code soon!</p>');
+
+                    // Hide divs with class 'hiddenInfo'
+                    $('.hiddeInfo').hide();
+                    $(this).after('<button class="notify-button">Notify Me</button>');
+                    $(this).after('<p class="consent-msg" style="font-size: 10px;">*By clicking this button, you agree to receive email communications from Goldtux</p>');
+
+
                 } else {
                     isValidZip = true; // set isValidZip to true
+                    // Show divs with class 'hiddenInfo'
+                    $('.hiddeInfo').show();
+                    $(".notify-button, .consent-msg").remove();
+
                 }
             });
 
@@ -174,11 +199,11 @@
                     $('#' + dropdownId).append(emptyOption);
                 }
 
-                for (var i = 0; i < 8; i++) {
+                for (var i = 0; i < 9; i++) {
                     var dayIndex = (selectedDayIndex + i) % 7;
                     var dayName = days[dayIndex];
 
-                    if (i == 7) {
+                    if (i == 8) {
                         dayName += " (Following week)"
                     }
 
@@ -199,11 +224,19 @@
 
                 if (currentStep == 1) {
                     var email = $('#email').val();
+                    var phone = $('#phone').val();
+
                     var pickupDay = $('#pickup-day').val();
                     var pickupTime = $('#pickup-time').val();
-
+                    if (!phone) {
+                        errorMessage += 'Question, phone number is required.<br/>';
+                    } else if (!/^\d{10}$/.test(phone)) {
+                        errorMessage += 'Question, please enter a valid phone number.<br/>';
+                    }
                     if (!email) {
                         errorMessage += 'Question, email is required.<br/>';
+                    } else if (!/^\S+@\S+\.\S+$/.test(email)) {
+                        errorMessage += 'Question, please enter a valid email.<br/>';
                     }
 
                     if (!pickupDay) {
@@ -355,6 +388,7 @@
             // Collect form data
             var formData = {
                 email: $('#email').val(),
+                phone: $('#phone').val(),
                 pickupDay: $('#pickup-day').val(),
                 pickupTime: $('#pickup-time').val(),
                 deliveryDay: $('#delivery-day').val(),

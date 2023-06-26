@@ -1,34 +1,17 @@
+
+
 .form-step {
     display: none;
+    border-radius: 10px;
+    box-shadow:2px 2px 9px 2px #1010105E;
+    padding: 30px;
     width: 50%;
+    font-family: 'Montserrat', sans-serif;
+    border:1px none #CDE0EC;
+   
 }
 
-#step-1 {
-    background-color: rgb(166, 166, 166);
-    display: block;
-}
 
-#step-2 {
-    background-color: green;
-}
-
-#step-3 {
-    background-color: blue;
-}
-
-#step-4 {
-    background-color: yellow;
-}
-
-#step-5 {
-    background-color: orange;
-}
-textarea {
-    
-    resize: none;
-    width: 70%;
-    height: 200px;
-}
 #notify-form {
     display: none;
 }
