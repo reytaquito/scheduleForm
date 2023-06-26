@@ -1,17 +1,42 @@
-
-
 .form-step {
     display: none;
     border-radius: 10px;
-    box-shadow:2px 2px 9px 2px #1010105E;
+    box-shadow: 2px 2px 9px 2px #1010105E;
     padding: 30px;
     width: 50%;
     font-family: 'Montserrat', sans-serif;
-    border:1px none #CDE0EC;
-   
+    border: 1px none #CDE0EC;
+
 }
 
+button {
+    font-size: 10px;
+    font-weight: 600;
+    padding: 6px 30px;
+    text-align: center;
+    color: white;
+    background: #13294b;
+    margin-top: 20px;
+    border-radius: 100px !important;
+    border: none;
+
+}
 
 #notify-form {
     display: none;
 }
+
+input {
+    border: none !important;
+    background-color: #f4f4f4;
+    border-radius: .25rem;
+    padding: 2px 0;
+    width: 50%;
+}
+select{
+    border: none;
+    background-color: #f4f4f4;
+    border-radius: .25rem;
+    padding: 2px 0;
+    width: 50%;
+ }
