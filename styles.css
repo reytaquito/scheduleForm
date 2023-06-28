@@ -24,19 +24,24 @@ button {
 
 #notify-form {
     display: none;
+    
 }
 
 input {
     border: none !important;
     background-color: #f4f4f4;
     border-radius: .25rem;
-    padding: 2px 0;
+    padding: 4px 0;
     width: 50%;
+    font-size: 10px;
 }
 select{
     border: none;
     background-color: #f4f4f4;
     border-radius: .25rem;
-    padding: 2px 0;
+    padding: 4px 0;
     width: 50%;
  }
+ #same-as-pickup {
+    width:3%
+}
