@@ -8,6 +8,8 @@
     <title>Document</title>
     <link rel="stylesheet" href="styles.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/css/select2.min.css" rel="stylesheet" />
+
 
 
 </head>
@@ -75,16 +77,16 @@
                 <input type="text" id="pickup-state"><br>
                 <label for="pickup-zip">Zip Code *</label><br>
                 <div id="zip-code-container">
-                    <input list="zip-codes" type="text" id="pickup-zip" name="pickup-zip" maxlength="5"><br>
+                    <select id="pickup-zip" class="zipcode-select"></select>
                 </div>
-                <datalist id="zip-codes"></datalist>
                 <div class="hiddeInfo">
                     <label for="same-as-pickup">The same delivery address?</label><br>
                     <input type="checkbox" id="same-as-pickup"> Same As Pickup<br>
                 </div>
                 <div class="notifyMe" style="display: none; margin-top: -40px;">
                     <button>Notify Me</button>
-                    <p class="consent-msg" style="font-size: 10px;">*By clicking this button, you agree to receive email communications from Goldtux</p>
+                    <p class="consent-msg" style="font-size: 10px;">*By clicking this button, you agree to receive email
+                        communications from Goldtux</p>
                 </div>
 
 
@@ -111,18 +113,18 @@
                 <input type="text" id="delivery-state"><br>
                 <label for="delivery-zip">Zip Code *</label><br>
                 <div id="zip-code-container">
-                    <input list="zip-codes" type="text" id="delivery-zip" name="delivery-zip" maxlength="5"><br>
+                    <select id="delivery-zip" class="zipcode-select"></select>
                 </div>
                 <div class="notifyMe" style="display: none; margin-top: -40px!important;">
                     <button>Notify Me</button>
-                    <p class="consent-msg" style="font-size: 10px;">*By clicking this button, you agree to receive email communications from Goldtux</p>
+                    <p class="consent-msg" style="font-size: 10px;">*By clicking this button, you agree to receive email
+                        communications from Goldtux</p>
                 </div>
             </form>
             <div class="hiddeInfo">
                 <button class="back-btn">Back</button>
                 <button class="next-btn">Next</button>
             </div>
-
         </div>
 
         <div class="form-step" id="step-5" style="display: none; ">
@@ -135,26 +137,47 @@
         </div>
     </div>
 
-
-
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/js/select2.min.js"></script>
 
     <script>
         $(document).ready(function () {
             var currentStep = 1;
-            
+
             // Map numbers to day names
             var days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
             var zipCodes = ["33012", "33013", "33014", "33015", "33016", "33018", "33025", "33054", "33055", "33154", "33160", "33167", "33179"];
 
             var isValidZip = true; // this variable is to track if a zip is valid
+           
+            $('#phone').on('input', function () {
+                this.value = this.value.replace(/[^0-9]/g, '');
+            });
 
-            for (var i = 0; i < zipCodes.length; i++) {
-                var option = $('<option>', {
-                    value: zipCodes[i]
-                });
-                $('#zip-codes').append(option);
-            }
-            
+            zipCodes.forEach(function (zip) {
+                var newOption = new Option(zip, zip, false, false);
+                $('#pickup-zip').append(newOption).trigger('change');
+            });
+
+            zipCodes.forEach(function (zip) {
+                var newOption = new Option(zip, zip, false, false);
+                $('#delivery-zip').append(newOption).trigger('change');
+            });
+            $('.zipcode-select').select2({
+                data: zipCodes,
+                placeholder: 'Select a zipcode',
+                language: {
+                    noResults: function (params) {
+                        return "Coming to your zip code soon!"; // Change this to your custom message
+                    }
+                }
+            });
+            $('.zipcode-select').on('select2:open', function () {
+                $('.select2-search__field').attr('maxlength', 5);
+
+                // This part is optional - it forces the numeric keypad on mobile devices
+                $('.select2-search__field').attr('inputmode', 'numeric');
+                $('.select2-search__field').attr('pattern', '\\d*');
+            });
             $('#pickup-zip, #delivery-zip').change(function () {
                 var inputValue = $(this).val();
                 // Remove any previous warning message
@@ -167,14 +190,14 @@
                     // Hide divs with class 'hiddenInfo'
                     $('.hiddeInfo').hide();
                     $('.notifyMe').show();
-                    
+
 
                 } else {
                     isValidZip = true; // set isValidZip to true
                     // Show divs with class 'hiddenInfo'
                     $('.hiddeInfo').show();
                     $('.notifyMe').hide();
-                    
+
 
                 }
             });
@@ -197,8 +220,8 @@
                     $("#my-form").prepend('<p class="top-warning-msg" style="color:red;">Please enter a valid ZIP code.</p>');
                 }
             });
-            
-            
+
+
             // Function to populate day dropdown
             function populateDayDropdown(dropdownId, selectedDayIndex, isDelivery) {
                 if (isDelivery) {
