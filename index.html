@@ -8,10 +8,8 @@
     <title>Document</title>
     <link rel="stylesheet" href="styles.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/css/select2.min.css" rel="stylesheet" />
-
-
-
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+   
 </head>
 
 <body>
@@ -21,14 +19,13 @@
 
             <label for="email">Email*</label> <br>
             <input type="email" id="email" name="email"> <br>
-            <label for="phone" maxlength="10">Phone Number*</label> <br>
+            <label for="phone">Phone Number*</label> <br>
             <input type="text" class="form-control" id="phone" name="phone"> <br>
             <p>Select a day and time for ALL YOUR PICKUPS:</p>
             <p>Recurring Pickup Day*</p>
             <select id="pickup-day">
                 <option value=""></option>
             </select>
-
             <p>Recurring Pickup Window*</p>
             <select id="pickup-time">
                 <option value=""></option>
@@ -36,21 +33,16 @@
                 <option value="9-10">9am-10am</option>
                 <option value="10-11">10am-11am</option>
             </select> <br>
-
             <button class="next-btn">Next</button>
         </div>
-
         <div class="form-step" id="step-2" style="display: none; ">
             <p id="error-message-2" style="display:none;color:red"></p>
-
             <p>Select a day and time for ALL YOUR DELIVERIES:</p>
             <p>*Note: Please select a Delivery Day at least 2 days after your Pickup Day. 24hrs Coming soon!</p>
-
             <p>Recurring Delivery Day *</p>
             <select id="delivery-day">
                 <option value=""></option>
             </select>
-
             <p>Recurring Delivery Window *</p>
             <select id="delivery-time">
                 <option value=""></option>
@@ -58,11 +50,9 @@
                 <option value="3-4">3pm-4pm</option>
                 <option value="4-5">4pm-5pm</option>
             </select> <br>
-
             <button class="back-btn">Back</button>
             <button class="next-btn">Next</button>
         </div>
-
         <div class="form-step" id="step-3" style="display: none;">
             <div id="error-message-3" style="color: red;"></div>
             <h2>Pickup Address</h2>
@@ -76,29 +66,29 @@
                 <label for="pickup-state">State *</label><br>
                 <input type="text" id="pickup-state"><br>
                 <label for="pickup-zip">Zip Code *</label><br>
-                <div id="zip-code-container">
-                    <select id="pickup-zip" class="zipcode-select"></select>
+
+
+
+                <div class="ui-widget">
+                    <input id="pickup-zip" type="tel" maxlength="5">
                 </div>
+
+
                 <div class="hiddeInfo">
                     <label for="same-as-pickup">The same delivery address?</label><br>
                     <input type="checkbox" id="same-as-pickup"> Same As Pickup<br>
                 </div>
-                <div class="notifyMe" style="display: none; margin-top: -40px;">
+                <div class="notifyMe" style="display: none; margin-top: -10px;">
                     <button>Notify Me</button>
                     <p class="consent-msg" style="font-size: 10px;">*By clicking this button, you agree to receive email
                         communications from Goldtux</p>
                 </div>
-
-
             </form>
             <div class="hiddeInfo">
-
                 <button class="back-btn">Back</button>
                 <button class="next-btn">Next</button>
             </div>
-
         </div>
-
         <div class="form-step" id="step-4" style="display: none; ">
             <div id="error-message-4" style="color: red;"></div>
             <h2>Delivery Address</h2>
@@ -111,11 +101,14 @@
                 <input type="text" id="delivery-city"><br>
                 <label for="delivery-state">State *</label><br>
                 <input type="text" id="delivery-state"><br>
+
                 <label for="delivery-zip">Zip Code *</label><br>
-                <div id="zip-code-container">
-                    <select id="delivery-zip" class="zipcode-select"></select>
+
+                <div class="ui-widget">
+                    <input id="delivery-zip" type="tel" maxlength="5">
                 </div>
-                <div class="notifyMe" style="display: none; margin-top: -40px!important;">
+
+                <div class="notifyMe" style="display: none; margin-top: -10px!important;">
                     <button>Notify Me</button>
                     <p class="consent-msg" style="font-size: 10px;">*By clicking this button, you agree to receive email
                         communications from Goldtux</p>
@@ -126,7 +119,6 @@
                 <button class="next-btn">Next</button>
             </div>
         </div>
-
         <div class="form-step" id="step-5" style="display: none; ">
             <h2>Any Additional Information?</h2>
             <textarea id="additional-info"
@@ -136,61 +128,45 @@
             <div id="error-message-5" style="color:red; display:none;"></div>
         </div>
     </div>
-
-    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/js/select2.min.js"></script>
-
+    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
     <script>
         $(document).ready(function () {
             var currentStep = 1;
 
             // Map numbers to day names
             var days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
-            var zipCodes = ["33012", "33013", "33014", "33015", "33016", "33018", "33025", "33054", "33055", "33154", "33160", "33167", "33179"];
 
-            var isValidZip = true; // this variable is to track if a zip is valid
-           
-            $('#phone').on('input', function () {
-                this.value = this.value.replace(/[^0-9]/g, '');
-            });
+            var availableTags = [
+                "33012", "33013", "33014", "33015", "33016", "33018", "33025", "33054", "33055", "33154", "33160", "33167", "33179"
+            ];
 
-            zipCodes.forEach(function (zip) {
-                var newOption = new Option(zip, zip, false, false);
-                $('#pickup-zip').append(newOption).trigger('change');
-            });
-
-            zipCodes.forEach(function (zip) {
-                var newOption = new Option(zip, zip, false, false);
-                $('#delivery-zip').append(newOption).trigger('change');
-            });
-            $('.zipcode-select').select2({
-                data: zipCodes,
-                placeholder: 'Select a zipcode',
-                language: {
-                    noResults: function (params) {
-                        return "Coming to your zip code soon!"; // Change this to your custom message
-                    }
+            var isValidZip = true;
+            $('#pickup-zip, #delivery-zip').keypress(function (e) {
+                if (e.which != 8 && e.which != 0 && (e.which < 48 || e.which > 57)) {
+                    return false;
+                }
+            }).on("input", function () {
+                if ($(this).val().length > 5) {
+                    $(this).val($(this).val().slice(0, 5));
                 }
             });
-            $('.zipcode-select').on('select2:open', function () {
-                $('.select2-search__field').attr('maxlength', 5);
 
-                // This part is optional - it forces the numeric keypad on mobile devices
-                $('.select2-search__field').attr('inputmode', 'numeric');
-                $('.select2-search__field').attr('pattern', '\\d*');
+            // Agregar funcionalidad de autocompletado
+            $('#pickup-zip, #delivery-zip').autocomplete({
+                source: availableTags
             });
+
             $('#pickup-zip, #delivery-zip').change(function () {
                 var inputValue = $(this).val();
                 // Remove any previous warning message
                 $(".warning-msg").remove();
-
-                if (!zipCodes.includes(inputValue)) {
+                if (!availableTags.includes(inputValue)) {
                     isValidZip = false; // set isValidZip to false
                     $(this).after('<p class="warning-msg" style="color:red;">Coming to your zip code soon!</p>');
-
                     // Hide divs with class 'hiddenInfo'
                     $('.hiddeInfo').hide();
                     $('.notifyMe').show();
-
 
                 } else {
                     isValidZip = true; // set isValidZip to true
@@ -198,10 +174,8 @@
                     $('.hiddeInfo').show();
                     $('.notifyMe').hide();
 
-
                 }
             });
-
             // When you press "Next", check if the zip is valid. If not, prevent moving to next step.
             $("#next-button").click(function (e) {
                 if (!isValidZip) {
@@ -209,7 +183,6 @@
                     alert("Please enter a valid ZIP code."); // show a warning message
                 }
             });
-
             // When you press "Next", check if the zip is valid. If not, prevent moving to next step.
             $("#next-button").click(function (e) {
                 if (!isValidZip) {
@@ -231,15 +204,12 @@
                     });
                     $('#' + dropdownId).append(emptyOption);
                 }
-
                 for (var i = 0; i < 9; i++) {
                     var dayIndex = (selectedDayIndex + i) % 7;
                     var dayName = days[dayIndex];
-
                     if (i == 8) {
                         dayName += " (Following week)"
                     }
-
                     var option = $('<option>', {
                         value: dayName,
                         text: dayName,
@@ -248,17 +218,13 @@
                     $('#' + dropdownId).append(option);
                 }
             }
-
             // Populate the pickup day dropdown
             populateDayDropdown('pickup-day', (new Date()).getDay(), false);
-
             $('.next-btn').click(function () {
                 var errorMessage = "";
-
                 if (currentStep == 1) {
                     var email = $('#email').val();
                     var phone = $('#phone').val();
-
                     var pickupDay = $('#pickup-day').val();
                     var pickupTime = $('#pickup-time').val();
                     if (!phone) {
@@ -271,40 +237,32 @@
                     } else if (!/^\S+@\S+\.\S+$/.test(email)) {
                         errorMessage += 'Question, please enter a valid email.<br/>';
                     }
-
                     if (!pickupDay) {
                         errorMessage += 'Question, pickup day is required.<br/>';
                     }
-
                     if (!pickupTime) {
                         errorMessage += 'Question, pickup time is required.<br/>';
                     }
-
                     if (errorMessage) {
                         $('#error-message').html(errorMessage).show();
                         return;
                     } else {
                         $('#error-message').hide();
-
                         // Populate the delivery day dropdown based on the pickup day selection
                         var selectedPickupDayIndex = days.indexOf(pickupDay);
                         $('#delivery-day').empty();
                         populateDayDropdown('delivery-day', selectedPickupDayIndex, true);
                     }
                 }
-
                 else if (currentStep == 2) {
                     var deliveryDay = $('#delivery-day').val();
                     var deliveryTime = $('#delivery-time').val();
-
                     if (!deliveryDay) {
                         errorMessage += 'Question, delivery day is required.<br/>';
                     }
-
                     if (!deliveryTime) {
                         errorMessage += 'Question, delivery time is required.<br/>';
                     }
-
                     if (errorMessage) {
                         $('#error-message-2').html(errorMessage).show();
                         return;
@@ -317,23 +275,18 @@
                     var pickupCity = $('#pickup-city').val();
                     var pickupState = $('#pickup-state').val();
                     var pickupZip = $('#pickup-zip').val();
-
                     if (!pickupAddressLine1) {
                         errorMessage += 'Question, Address Line 1 is required.<br/>';
                     }
-
                     if (!pickupCity) {
                         errorMessage += 'Question, City is required.<br/>';
                     }
-
                     if (!pickupState) {
                         errorMessage += 'Question, State is required.<br/>';
                     }
-
                     if (!pickupZip) {
                         errorMessage += 'Question, Zip Code is required.<br/>';
                     }
-
                     if (errorMessage) {
                         $('#error-message-3').html(errorMessage).show();
                         return;
@@ -341,29 +294,23 @@
                         $('#error-message-3').hide();
                     }
                 }
-
                 else if (currentStep == 4) {
                     var deliveryAddressLine1 = $('#delivery-address-line-1').val();
                     var deliveryCity = $('#delivery-city').val();
                     var deliveryState = $('#delivery-state').val();
                     var deliveryZip = $('#delivery-zip').val();
-
                     if (!deliveryAddressLine1) {
                         errorMessage += 'Question, Address Line 1 is required.<br/>';
                     }
-
                     if (!deliveryCity) {
                         errorMessage += 'Question, City is required.<br/>';
                     }
-
                     if (!deliveryState) {
                         errorMessage += 'Question, State is required.<br/>';
                     }
-
                     if (!deliveryZip) {
                         errorMessage += 'Question, Zip Code is required.<br/>';
                     }
-
                     if (errorMessage) {
                         $('#error-message-4').html(errorMessage).show();
                         return;
@@ -379,43 +326,36 @@
                         var pickupCity = $('#pickup-city').val();
                         var pickupState = $('#pickup-state').val();
                         var pickupZip = $('#pickup-zip').val();
-
                         $('#delivery-address-line-1').val(pickupAddressLine1);
                         $('#delivery-address-line-2').val(pickupAddressLine2);
                         $('#delivery-city').val(pickupCity);
                         $('#delivery-state').val(pickupState);
                         $('#delivery-zip').val(pickupZip);
-
                         if (currentStep < 5) {
                             $('#step-' + currentStep).hide();
                             currentStep += 2; // Skip step 4
                             $('#step-' + currentStep).show();
                         }
-
                         return;
                     }
                 }
-
                 if (currentStep < 5) {
                     $('#step-' + currentStep).hide();
                     currentStep += 1;
                     $('#step-' + currentStep).show();
                 }
             });
-
             $('.back-btn').click(function () {
                 if (currentStep > 1) {
                     $('#step-' + currentStep).hide();
                     currentStep -= 1;
                     $('#step-' + currentStep).show();
-
                     if (currentStep === 5) {
                         // Change 'Next' button back to 'Submit'
                         $('#next-btn').attr('id', 'submit-btn').text('Submit');
                     }
                 }
             });
-
         });
         $("#submit-btn").click(function () {
             // Collect form data
@@ -455,17 +395,7 @@
                     $('#error-message-5').html('There was an error submitting the form. Please try again.').show();
                 }
             });
-
         });
-
-
-
-
-
-
-
-
-
     </script>
 </body>
 
