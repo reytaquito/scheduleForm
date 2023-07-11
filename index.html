@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>ScheduleForm</title>
     <link rel="stylesheet" href="styles.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
@@ -15,16 +15,17 @@
 <body>
     <div id="form-container">
         <div class="form-step" id="step-1" style="display: block; ">
-            <p id="error-message" style="display:none;color:rgb(245, 0, 0)"></p>
+            <p id="error-message" style="display:none;color:rgb(245, 0, 0); margin-top: 0px; margin-bottom: 10px;"></p>
 
             <label for="email">Email*</label> <br>
-            <input type="email" id="email" name="email"> <br>
+            <input type="email" id="email" name="email" placeholder="Membership Email"> <br>
             <label for="phone">Phone Number*</label> <br>
-            <input type="text" class="form-control" id="phone" name="phone"> <br>
-            <p>Select a day and time for ALL YOUR PICKUPS:</p>
+            <input type="text" class="form-control" id="phone" name="phone" placeholder="Phone"> <br>
+            <p id="blueT">Select a day and time for ALL YOUR PICKUPS:</p>
             <p>Recurring Pickup Day*</p>
             <select id="pickup-day">
                 <option value=""></option>
+                
             </select>
             <p>Recurring Pickup Window*</p>
             <select id="pickup-time">
@@ -37,8 +38,8 @@
         </div>
         <div class="form-step" id="step-2" style="display: none; ">
             <p id="error-message-2" style="display:none;color:red"></p>
-            <p>Select a day and time for ALL YOUR DELIVERIES:</p>
-            <p>*Note: Please select a Delivery Day at least 2 days after your Pickup Day. 24hrs Coming soon!</p>
+            <p id="blueT">Select a day and time for ALL YOUR DELIVERIES:</p>
+            <p id="steP2">*Note: Please select a Delivery Day at least 2 days after your Pickup Day. 24hrs Coming soon!</p>
             <p>Recurring Delivery Day *</p>
             <select id="delivery-day">
                 <option value=""></option>
@@ -76,7 +77,9 @@
 
                 <div class="hiddeInfo">
                     <label for="same-as-pickup">The same delivery address?</label><br>
-                    <input type="checkbox" id="same-as-pickup"> Same As Pickup<br>
+                    <div style="display: flex; align-items: center;">
+                    <input type="checkbox" id="same-as-pickup" style="height: 20px; width: 30px;"> Same As Pickup<br>
+                    </div>
                 </div>
                 <div class="notifyMe" style="display: none; margin-top: -10px;">
                     <button>Notify Me</button>
@@ -120,9 +123,9 @@
             </div>
         </div>
         <div class="form-step" id="step-5" style="display: none; ">
-            <h2>Any Additional Information?</h2>
+            <h4>Any Additional Information?</h4>
             <textarea id="additional-info"
-                placeholder="Gate code, pickup instructions, special request (no crest, no starch, fold pants, etc.)"></textarea><br>
+                placeholder="Gate code, pickup instructions, special request (no crest, no starch, fold pants, etc.)" rows="6" cols="40" style="resize: none; background-color:#F7FAFC; border: none; padding: 4px;"></textarea><br>
             <button class="back-btn">Back</button>
             <button id="submit-btn">Submit</button>
             <div id="error-message-5" style="color:red; display:none;"></div>
@@ -228,20 +231,22 @@
                     var pickupDay = $('#pickup-day').val();
                     var pickupTime = $('#pickup-time').val();
                     if (!phone) {
-                        errorMessage += 'Question, phone number is required.<br/>';
+                        errorMessage += '<div style="border-left: 7px solid red; padding: 10px; height: 5px; display: flex; align-items: center;">&#8226; Phone number is required.<br/></div>';
+
                     } else if (!/^\d{10}$/.test(phone)) {
-                        errorMessage += 'Question, please enter a valid phone number.<br/>';
+                        errorMessage += '<div style="border-left: 7px solid red; padding: 10px; height: 5px; display: flex; align-items: center;">&#8226; Please enter a valid phone number.<br/></div>';
+
                     }
                     if (!email) {
-                        errorMessage += 'Question, email is required.<br/>';
+                        errorMessage += '<div style="border-left: 7px solid red; padding: 10px; height: 5px; display: flex; align-items: center;">&#8226; Email is required.<br/></div>';
                     } else if (!/^\S+@\S+\.\S+$/.test(email)) {
-                        errorMessage += 'Question, please enter a valid email.<br/>';
+                        errorMessage += '<div style="border-left: 7px solid red; padding: 10px; height: 5px; display: flex; align-items: center;">&#8226; Please enter a valid email.<br/></div>';
                     }
                     if (!pickupDay) {
-                        errorMessage += 'Question, pickup day is required.<br/>';
+                        errorMessage += '<div style="border-left: 7px solid red; padding: 10px; height: 5px; display: flex; align-items: center;">&#8226; Pickup day is required.<br/></div>';
                     }
                     if (!pickupTime) {
-                        errorMessage += 'Question, pickup time is required.<br/>';
+                        errorMessage += '<div style="border-left: 7px solid red; padding: 10px; height: 5px; display: flex; align-items: center;">&#8226; Pickup time is required.<br/></div>';
                     }
                     if (errorMessage) {
                         $('#error-message').html(errorMessage).show();
@@ -258,10 +263,10 @@
                     var deliveryDay = $('#delivery-day').val();
                     var deliveryTime = $('#delivery-time').val();
                     if (!deliveryDay) {
-                        errorMessage += 'Question, delivery day is required.<br/>';
+                        errorMessage += '<div style="border-left: 7px solid red; padding: 10px; height: 5px; display: flex; align-items: center;">&#8226; Delivery day is required.<br/></div>';
                     }
                     if (!deliveryTime) {
-                        errorMessage += 'Question, delivery time is required.<br/>';
+                        errorMessage += '<div style="border-left: 7px solid red; padding: 10px; height: 5px; display: flex; align-items: center;">&#8226; Delivery time is required.<br/></div>';
                     }
                     if (errorMessage) {
                         $('#error-message-2').html(errorMessage).show();
@@ -276,16 +281,18 @@
                     var pickupState = $('#pickup-state').val();
                     var pickupZip = $('#pickup-zip').val();
                     if (!pickupAddressLine1) {
-                        errorMessage += 'Question, Address Line 1 is required.<br/>';
+                        errorMessage += '<div style="border-left: 7px solid red; padding: 10px; height: 5px; display: flex; align-items: center;">&#8226; Address Line 1 is required.<br/></div>';
                     }
                     if (!pickupCity) {
-                        errorMessage += 'Question, City is required.<br/>';
+                        errorMessage += '<div style="border-left: 7px solid red; padding: 10px; height: 5px; display: flex; align-items: center;">&#8226; City is required.<br/></div>';
+
                     }
                     if (!pickupState) {
-                        errorMessage += 'Question, State is required.<br/>';
+                        errorMessage += '<div style="border-left: 7px solid red; padding: 10px; height: 5px; display: flex; align-items: center;">&#8226; State is required.<br/></div>';
                     }
                     if (!pickupZip) {
-                        errorMessage += 'Question, Zip Code is required.<br/>';
+                        errorMessage += '<div style="border-left: 7px solid red; padding: 10px; height: 5px; display: flex; align-items: center;">&#8226; Zip Code is required.<br/></div>';
+
                     }
                     if (errorMessage) {
                         $('#error-message-3').html(errorMessage).show();
@@ -300,16 +307,18 @@
                     var deliveryState = $('#delivery-state').val();
                     var deliveryZip = $('#delivery-zip').val();
                     if (!deliveryAddressLine1) {
-                        errorMessage += 'Question, Address Line 1 is required.<br/>';
+                        errorMessage += '<div style="border-left: 7px solid red; padding: 10px; height: 5px; display: flex; align-items: center;">&#8226; Address Line 1 is required.<br/></div>';
+
                     }
                     if (!deliveryCity) {
-                        errorMessage += 'Question, City is required.<br/>';
+                        errorMessage += '<div style="border-left: 7px solid red; padding: 10px; height: 5px; display: flex; align-items: center;">&#8226; City is required.<br/></div>';
+
                     }
                     if (!deliveryState) {
-                        errorMessage += 'Question, State is required.<br/>';
+                        errorMessage += '<div style="border-left: 7px solid red; padding: 10px; height: 5px; display: flex; align-items: center;">&#8226; State is required.<br/></div>';
                     }
                     if (!deliveryZip) {
-                        errorMessage += 'Question, Zip Code is required.<br/>';
+                        errorMessage += '<div style="border-left: 7px solid red; padding: 10px; height: 5px; display: flex; align-items: center;">&#8226; Zip Code is required.<br/></div>';
                     }
                     if (errorMessage) {
                         $('#error-message-4').html(errorMessage).show();
