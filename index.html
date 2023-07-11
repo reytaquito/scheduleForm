@@ -9,7 +9,7 @@
     <link rel="stylesheet" href="styles.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
-   
+
 </head>
 
 <body>
@@ -25,7 +25,7 @@
             <p>Recurring Pickup Day*</p>
             <select id="pickup-day">
                 <option value=""></option>
-                
+
             </select>
             <p>Recurring Pickup Window*</p>
             <select id="pickup-time">
@@ -34,12 +34,15 @@
                 <option value="9-10">9am-10am</option>
                 <option value="10-11">10am-11am</option>
             </select> <br>
-            <button class="next-btn">Next</button>
+            <div class="button-wrapper">
+                <button class="next-btn">Next</button>
+            </div>
         </div>
         <div class="form-step" id="step-2" style="display: none; ">
             <p id="error-message-2" style="display:none;color:red"></p>
             <p id="blueT">Select a day and time for ALL YOUR DELIVERIES:</p>
-            <p id="steP2">*Note: Please select a Delivery Day at least 2 days after your Pickup Day. 24hrs Coming soon!</p>
+            <p id="steP2">*Note: Please select a Delivery Day at least 2 days after your Pickup Day. 24hrs Coming soon!
+            </p>
             <p>Recurring Delivery Day *</p>
             <select id="delivery-day">
                 <option value=""></option>
@@ -51,8 +54,10 @@
                 <option value="3-4">3pm-4pm</option>
                 <option value="4-5">4pm-5pm</option>
             </select> <br>
+            <div class="button-wrapper"> 
             <button class="back-btn">Back</button>
             <button class="next-btn">Next</button>
+        </div>
         </div>
         <div class="form-step" id="step-3" style="display: none;">
             <div id="error-message-3" style="color: red;"></div>
@@ -78,7 +83,8 @@
                 <div class="hiddeInfo">
                     <label for="same-as-pickup">The same delivery address?</label><br>
                     <div style="display: flex; align-items: center;">
-                    <input type="checkbox" id="same-as-pickup" style="height: 20px; width: 30px;"> Same As Pickup<br>
+                        <input type="checkbox" id="same-as-pickup" style="height: 20px; width: 30px;"> Same As
+                        Pickup<br>
                     </div>
                 </div>
                 <div class="notifyMe" style="display: none; margin-top: -10px;">
@@ -88,8 +94,10 @@
                 </div>
             </form>
             <div class="hiddeInfo">
+                <div class="button-wrapper"> 
                 <button class="back-btn">Back</button>
                 <button class="next-btn">Next</button>
+                </div>
             </div>
         </div>
         <div class="form-step" id="step-4" style="display: none; ">
@@ -118,16 +126,22 @@
                 </div>
             </form>
             <div class="hiddeInfo">
+                <div class="button-wrapper"> 
                 <button class="back-btn">Back</button>
                 <button class="next-btn">Next</button>
+                </div>
             </div>
         </div>
         <div class="form-step" id="step-5" style="display: none; ">
             <h4>Any Additional Information?</h4>
             <textarea id="additional-info"
-                placeholder="Gate code, pickup instructions, special request (no crest, no starch, fold pants, etc.)" rows="6" cols="40" style="resize: none; background-color:#F7FAFC; border: none; padding: 4px;"></textarea><br>
+                placeholder="Gate code, pickup instructions, special request (no crest, no starch, fold pants, etc.)"
+                rows="6" cols="40"
+                style="resize: none; background-color:#F7FAFC; border: none; padding: 4px;"></textarea><br>
+                <div class="button-wrapper"> 
             <button class="back-btn">Back</button>
             <button id="submit-btn">Submit</button>
+            </div>
             <div id="error-message-5" style="color:red; display:none;"></div>
         </div>
     </div>

@@ -111,3 +111,19 @@ select{
 ::placeholder{
     color: #afb8bcff
 }
+
+.button-wrapper {
+    display: flex;
+    justify-content: center;  /* This aligns items horizontally */
+    align-items: center;  /* This aligns items vertically */
+}
+
+.next-btn {
+    margin-left: 40px
+}
+#submit-btn {
+    margin-left: 40px
+}
+#step-1 .next-btn {
+    margin-left: 153px;
+}
