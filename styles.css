@@ -1,33 +1,5 @@
-/* styles for screens wider than 1200px (e.g., desktops) */
-@media (min-width: 1200px) {
-    .form-step {
-        width:100%; /* make the form 40% width on larger screens */
-        padding: 50px; /* more padding on larger screens */
-    }
-
-    input, select {
-        width: 60%; /* inputs take up 60% of the form width on larger screens */
-    }
-}
-
-/* styles for screens narrower than 576px (e.g., mobile phones) */
-@media (max-width: 576px) {
-    .form-step {
-        width: 90%; /* make the form 90% width on small screens */
-        padding: 15px; /* less padding on smaller screens */
-    }
-
-    input, select {
-        width: 100%; /* inputs take up 100% of the form width on smaller screens */
-    }
-}
-
-
-
-
-
 .form-step {
-    margin: 100px;
+    margin: 40px;
     display: none;
     border-radius: 10px;
     box-shadow: 2px 2px 9px 2px #1010105E;
@@ -50,12 +22,14 @@ button {
     border-radius: 100px !important;
     border: none;
     margin-bottom: 15px;
-
+}
+button:hover{
+    cursor: pointer;
 }
 
 #notify-form {
     display: none;
-    
+
 }
 
 input {
@@ -64,11 +38,12 @@ input {
     border-radius: .25rem;
     width: 90%;
     height: 30px;
-    font-size: 16px;
+
     margin: 10px 0;
     padding: 5px 10px;
 }
-select{
+
+select {
     font-size: 15px;
 
     border: none;
@@ -76,54 +51,90 @@ select{
     border-radius: .25rem;
     padding: 10px 7px;
     width: 95%;
-    height: 20px;  
-      
- }
- 
-    
+    height: 20px;
 
-
-.form-step select {
-    height: 38px; /* Ajusta la altura para que se ajuste al contenedor */
 }
 
-#blueT{
-    color: #13294BFF;  
-     font-size: 18px;
-    font-weight: 600;    
-     line-height: 1.5;   
-       padding: 0px 10px 0px 10px;
+.form-step select {
+    height: 38px;
+    /* Ajusta la altura para que se ajuste al contenedor */
+}
+
+#blueT {
+    color: #13294BFF;
+    font-size: 18px;
+    font-weight: 600;
+    line-height: 1.5;
+    padding: 0px 10px 0px 10px;
 }
 
 #steP2 {
     text-align: center;
     font-size: 14px;
-        font-weight: 300;
+    font-weight: 300;
     line-height: 1.5;
     padding: 5px 10px;
 }
-#step-3 h2, #step-4 h2{
+
+#step-3 h2,
+#step-4 h2 {
     font-size: 30px;
     font-weight: 300;
     line-height: 1.5;
 }
 
-::placeholder{
+::placeholder {
     color: #afb8bcff
 }
 
 .button-wrapper {
     display: flex;
-    justify-content: center;  /* This aligns items horizontally */
-    align-items: center;  /* This aligns items vertically */
+    justify-content: center;
+    /* This aligns items horizontally */
+    align-items: center;
+    /* This aligns items vertically */
 }
 
 .next-btn {
     margin-left: 40px
 }
+
 #submit-btn {
     margin-left: 40px
 }
+
 #step-1 .next-btn {
     margin-left: 153px;
+}
+
+#additional-info {
+    width: 100%;
+    /* O cualquier otro valor que prefieras para pantallas más grandes */
+}
+.consent-msg{
+    padding: 0px 3px;
+    font-size: 10px;
+    margin: 0;
+}
+
+@media (max-width: 576px) {
+    .form-step {
+        width: 275px;
+        padding: 15px;
+    }
+
+    .next-btn {
+        margin-left: 19px;
+    }
+
+    #step-1 .next-btn {
+        margin-left: 132px;
+    }
+
+    #additional-info {
+        width: 266px;
+    }
+    #submit-btn {
+        margin-left: 24px;
+    }
 }

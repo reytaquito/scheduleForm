@@ -54,10 +54,10 @@
                 <option value="3-4">3pm-4pm</option>
                 <option value="4-5">4pm-5pm</option>
             </select> <br>
-            <div class="button-wrapper"> 
-            <button class="back-btn">Back</button>
-            <button class="next-btn">Next</button>
-        </div>
+            <div class="button-wrapper">
+                <button class="back-btn">Back</button>
+                <button class="next-btn">Next</button>
+            </div>
         </div>
         <div class="form-step" id="step-3" style="display: none;">
             <div id="error-message-3" style="color: red;"></div>
@@ -88,15 +88,15 @@
                     </div>
                 </div>
                 <div class="notifyMe" style="display: none; margin-top: -10px;">
-                    <button>Notify Me</button>
-                    <p class="consent-msg" style="font-size: 10px;">*By clicking this button, you agree to receive email
+                    <button style="margin: 15px 0px;" class="notifyMe">Notify Me</button>
+                    <p class="consent-msg">*By clicking this button, you agree to receive email
                         communications from Goldtux</p>
                 </div>
             </form>
             <div class="hiddeInfo">
-                <div class="button-wrapper"> 
-                <button class="back-btn">Back</button>
-                <button class="next-btn">Next</button>
+                <div class="button-wrapper">
+                    <button class="back-btn">Back</button>
+                    <button class="next-btn">Next</button>
                 </div>
             </div>
         </div>
@@ -120,15 +120,15 @@
                 </div>
 
                 <div class="notifyMe" style="display: none; margin-top: -10px!important;">
-                    <button>Notify Me</button>
-                    <p class="consent-msg" style="font-size: 10px;">*By clicking this button, you agree to receive email
+                    <button style="margin: 15px 0px;" class="notifyMe">Notify Me</button>
+                    <p class="consent-msg">*By clicking this button, you agree to receive email
                         communications from Goldtux</p>
                 </div>
             </form>
             <div class="hiddeInfo">
-                <div class="button-wrapper"> 
-                <button class="back-btn">Back</button>
-                <button class="next-btn">Next</button>
+                <div class="button-wrapper">
+                    <button class="back-btn">Back</button>
+                    <button class="next-btn">Next</button>
                 </div>
             </div>
         </div>
@@ -138,9 +138,9 @@
                 placeholder="Gate code, pickup instructions, special request (no crest, no starch, fold pants, etc.)"
                 rows="6" cols="40"
                 style="resize: none; background-color:#F7FAFC; border: none; padding: 4px;"></textarea><br>
-                <div class="button-wrapper"> 
-            <button class="back-btn">Back</button>
-            <button id="submit-btn">Submit</button>
+            <div class="button-wrapper">
+                <button class="back-btn">Back</button>
+                <button id="submit-btn">Submit</button>
             </div>
             <div id="error-message-5" style="color:red; display:none;"></div>
         </div>
@@ -180,7 +180,7 @@
                 $(".warning-msg").remove();
                 if (!availableTags.includes(inputValue)) {
                     isValidZip = false; // set isValidZip to false
-                    $(this).after('<p class="warning-msg" style="color:red;">Coming to your zip code soon!</p>');
+                    $(this).after('<p class="warning-msg" style="border-left: 7px solid red; padding: 10px; height: 5px; display: flex; align-items: center; color:red">Coming to your zip code soon!</p>');
                     // Hide divs with class 'hiddenInfo'
                     $('.hiddeInfo').hide();
                     $('.notifyMe').show();
