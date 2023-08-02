@@ -8,6 +8,7 @@
     <title>ScheduleForm</title>
     <link rel="stylesheet" href="styles.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
     <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
 
 </head>
@@ -88,7 +89,7 @@
                     </div>
                 </div>
                 <div class="notifyMe" style="display: none; margin-top: -10px;">
-                    <button style="margin: 15px 0px;" class="notifyMe">Notify Me</button>
+                    <button id="notifyMeButton" style="margin: 15px 0px;" class="notifyMe">Notify Me</button>
                     <p class="consent-msg">*By clicking this button, you agree to receive email
                         communications from Goldtux</p>
                 </div>
@@ -120,7 +121,7 @@
                 </div>
 
                 <div class="notifyMe" style="display: none; margin-top: -10px!important;">
-                    <button style="margin: 15px 0px;" class="notifyMe">Notify Me</button>
+                    <button id="notifyMeButton" style="margin: 15px 0px;" class="notifyMe">Notify Me</button>
                     <p class="consent-msg">*By clicking this button, you agree to receive email
                         communications from Goldtux</p>
                 </div>
@@ -145,14 +146,13 @@
             <div id="error-message-5" style="color:red; display:none;"></div>
         </div>
     </div>
-    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
     <script>
         $(document).ready(function () {
             var currentStep = 1;
 
             // Map numbers to day names
-            var days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+            var days = ['Sundays', 'Mondays', 'Tuesdays', 'Wednesdays', 'Thursdays', 'Fridays', 'Saturdays'];
 
             var availableTags = [
                 "33012", "33013", "33014", "33015", "33016", "33018", "33025", "33054", "33055", "33154", "33160", "33167", "33179"
@@ -225,7 +225,11 @@
                     var dayIndex = (selectedDayIndex + i) % 7;
                     var dayName = days[dayIndex];
                     if (i == 8) {
-                        dayName += " (Following week)"
+                        dayName += " (Starting next week)"
+                    }
+                    if(i==7){
+                        dayName += " (Starting next week)"
+
                     }
                     var option = $('<option>', {
                         value: dayName,
@@ -380,6 +384,51 @@
                 }
             });
         });
+
+
+        // Function to call API  'notify me" button function POST 
+        // if the zip code is no available "notify me" button will display and will send the email to a list o possible guest to then send an email
+        function callAPI(email) {
+
+            var email = $('#email').val();
+            console.log('Email: ', email); // Debugging line
+            return new Promise((resolve, reject) => {
+                $.ajax({
+                    url: "YOUR_API_URL_HERE",
+                    method: "POST",
+                    data: { email: email },
+                    dataType: "json",
+                    success: function (data) {
+                        resolve(data);
+                    },
+                    error: function (jqXHR, textStatus, errorThrown) {
+                        console.error("Request failed: " + textStatus + ", " + errorThrown);
+                        reject(jqXHR);
+                    }
+                });
+            });
+        }
+        // Adding click event listener to the buttons
+        $(".notifyMe").on('click', function () {
+            let button = $(this);
+            button.prop('disabled', true).html('<div class="loader"></div>'); // Change the button to a loading spinner
+
+            // Call the API and start the timer
+            let apiCall = callAPI(email);
+            let timer = new Promise(resolve => setTimeout(resolve, 3000));
+
+            timer.then(() => {
+                apiCall.then((values) => {
+                    // If API call was successful, handle the result
+                    button.replaceWith('<p>We will send you an email when we reach your area.</p>');
+                }).catch((error) => {
+                    button.replaceWith('<p>An error ocurred, please send us a message at support@goldtux.com if you have any questions</p>');
+                });
+            });
+        });
+
+
+        //submit function POST 
         $("#submit-btn").click(function () {
             // Collect form data
             var formData = {
@@ -411,15 +460,20 @@
                 dataType: 'json',
                 success: function (response) {
                     // Handle successful response
-                    alert('Form submitted successfully!');
+                    window.location.href = "https://goldtux.com/goodbye-laundry-congratulations";
+
                 },
                 error: function (error) {
                     // Handle error response
-                    $('#error-message-5').html('There was an error submitting the form. Please try again.').show();
+                    $('#error-message-5').html('<div style="border-left: 7px solid red; padding: 13px; height: 5px; display: flex; align-items: center; margin-top: 15px; margin-bottom: 15px; margin-left: 5px;">&#8226; There was an error submitting the form. Please try again.<br/></div>').show();
                 }
             });
+            
         });
     </script>
 </body>
 
 </html>
+
+
+
